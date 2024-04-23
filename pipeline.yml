@@ -1,26 +1,42 @@
-# fly -t main set-pipeline -p hello-world-sample -c pipeline.yml
-# fly -t main unpause-pipeline -p hello-world-sample
-# fly -t main trigger-job -j hello-world-sample/my-job
-
-# 
 resources:
 - name: my-git-repo
   type: git
   source:
-    uri: https://github.com/narmadapittala/concourse.git
+    uri: https://github.com/yourusername/your-repo.git
     branch: main
+    private_key: ((git-private-key))  # Use a credential manager or vault for secure storage
 
 jobs:
-- name: my-job
+- name: build-and-deploy
   plan:
   - get: my-git-repo
     trigger: true
-  - task: my-task
+  - task: build-image
     config:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: alpine}
+        source: {repository: ubuntu}
+      inputs:
+      - name: my-git-repo
       run:
-        path: echo
-        args: ["Hello, Concourse!"]
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          cd my-git-repo
+          docker build -t my-docker-image .
+  - task: deploy-image
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: ubuntu}
+      inputs:
+      - name: my-git-repo
+      run:
+        path: /bin/bash
+        args:
+        - -c
+        - |
+          docker run -d --name my-container my-docker-image
