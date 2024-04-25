@@ -3,7 +3,7 @@ resources:
   type: git
   source: https://github.com/narmadapittala/concourse.git
     uri: 
-    branch: master
+    branch: main
 
 jobs:
 - name: unit
