@@ -24,7 +24,7 @@ jobs:
         args:
         - -c
         - |
-          cd my-git-repo
+          cd concourse
           docker build -t my-docker-image .
   - task: deploy-image
     config:
