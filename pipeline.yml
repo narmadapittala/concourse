@@ -4,7 +4,7 @@ resources:
   source:
     uri: https://github.com/narmadapittala/concourse.git
     branch: main
-    private_key: ((git-private-key))  # Use a credential manager or vault for secure storage
+    
 
 jobs:
 - name: build-and-deploy
