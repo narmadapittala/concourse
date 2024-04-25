@@ -1,5 +1,5 @@
 resources:
-- name: my-git-repo
+- name: concourse
   type: git
   source:
     uri: https://github.com/narmadapittala/concourse.git
@@ -9,7 +9,7 @@ resources:
 jobs:
 - name: build-and-deploy
   plan:
-  - get: my-git-repo
+  - get: concourse
     trigger: true
   - task: build-image
     config:
@@ -33,7 +33,7 @@ jobs:
         type: docker-image
         source: {repository: ubuntu}
       inputs:
-      - name: my-git-repo
+      - name: concourse
       run:
         path: /bin/bash
         args:
