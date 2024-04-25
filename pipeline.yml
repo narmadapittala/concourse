@@ -11,4 +11,4 @@ jobs:
   - get: concourse
     trigger: true
   - task: unit
-    file: concourse/ci/test.yml
+    file: concourse/pipeline.yml
